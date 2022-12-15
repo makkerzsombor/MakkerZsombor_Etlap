@@ -38,15 +38,7 @@ public class EtelFormView
         String nev = nevField.getText().trim();
         String leiras = leirasField.getText();
         int ar = arSpinner.getValue();
-        String menuId = menuButton.getId();
-        String kategoria = "főétel";
-        if (menuId.equals("foetel")){
-            kategoria = "főétel";
-        } else if (menuId.equals("eloetel")) {
-            kategoria = "előétel";
-        }else{
-            kategoria = "desszert";
-        }
+        String kategoria = menuButton.getText();
         Etel etel = new Etel(nev, leiras, ar, kategoria);
         try {
             if (db.createEtel(etel)){
@@ -70,4 +62,18 @@ public class EtelFormView
         return alert.showAndWait();
     }
 
+    @FXML
+    public void menuItem1Select(ActionEvent actionEvent) {
+        menuButton.setText(eloetelMenuItem.getText());
+    }
+
+    @FXML
+    public void menuItem2Select(ActionEvent actionEvent) {
+        menuButton.setText(foetelMenuItem.getText());
+    }
+
+    @FXML
+    public void menuItem3Select(ActionEvent actionEvent) {
+        menuButton.setText(desszertMenuItem.getText());
+    }
 }

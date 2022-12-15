@@ -34,9 +34,9 @@
       <TextArea fx:id="leirasField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <MenuButton fx:id="menuButton" mnemonicParsing="false" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <items>
-          <MenuItem fx:id="eloetelMenuItem" mnemonicParsing="false" text="Előétel" />
-          <MenuItem fx:id="foetelMenuItem" mnemonicParsing="false" text="Főétel" />
-            <MenuItem fx:id="desszertMenuItem" mnemonicParsing="false" text="Desszert" />
+          <MenuItem fx:id="eloetelMenuItem" mnemonicParsing="false" onAction="#menuItem1Select" text="előétel" />
+          <MenuItem fx:id="foetelMenuItem" mnemonicParsing="false" onAction="#menuItem2Select" text="főétel" />
+            <MenuItem fx:id="desszertMenuItem" mnemonicParsing="false" onAction="#menuItem3Select" text="desszert" />
         </items>
       </MenuButton>
    </children>
