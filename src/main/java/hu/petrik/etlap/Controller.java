@@ -93,6 +93,11 @@ public class Controller {
         stage.setScene(scene);
         EtelFormView controller = fxmlLoader.getController();
         stage.show();
+        try {
+            readEtelek();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML

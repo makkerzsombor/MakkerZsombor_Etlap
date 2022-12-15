@@ -3,7 +3,9 @@ package hu.petrik.etlap;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -27,19 +29,23 @@ public class EtelFormView
     @FXML
     private MenuItem desszertMenuItem;
 
-    private EtelDB db;
-
     public void initialize(){
-        arSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(100,2500,1250));
+        arSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(100,2500,1250, 10));
     }
 
     @FXML
     public void hozzaadasClick(ActionEvent actionEvent) {
         String nev = nevField.getText().trim();
-        String leiras = leirasField.getText();
+        String leiras = leirasField.getText().trim();
         int ar = arSpinner.getValue();
-        String kategoria = menuButton.getText();
+        String kategoria = menuButton.getText().trim();
         Etel etel = new Etel(nev, leiras, ar, kategoria);
+        EtelDB db = null;
+        try {
+            db = new EtelDB();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         try {
             if (db.createEtel(etel)){
                 alert(Alert.AlertType.WARNING, "Sikeres felvétel!", "");
@@ -52,7 +58,9 @@ public class EtelFormView
                         e.getMessage());
             });
         }
-        Platform.exit();
+        Node source = (Node)  actionEvent.getSource();
+        Stage stage  = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
     private Optional<ButtonType> alert(Alert.AlertType alertType, String headerText, String contentText){
