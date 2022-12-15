@@ -12,20 +12,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.petrik.etlap.Controller">
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.petrik.etlap.Controller">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+      <HBox prefHeight="50.0" prefWidth="200.0" spacing="20.0">
          <children>
             <Button fx:id="ujEtelButton" mnemonicParsing="false" onAction="#ujEtelClick" text="Új étel felvétele" />
             <Button fx:id="torlesButton" mnemonicParsing="false" onAction="#torlesClick" text="Törlés" />
          </children>
       </HBox>
-      <HBox prefHeight="200.0" prefWidth="200.0">
+      <HBox prefHeight="200.0" prefWidth="600.0">
          <children>
-            <TitledPane animated="false" prefHeight="150.0" prefWidth="600.0" text="Áremelés">
+            <TitledPane animated="false" prefHeight="150.0" prefWidth="800.0" text="Áremelés">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0">
                      <children>
@@ -72,11 +72,11 @@
             </TitledPane>
          </children>
       </HBox>
-      <TableView fx:id="Etlap" onMouseClicked="#tableViewClick" onSort="#sortList" prefHeight="200.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
+      <TableView fx:id="Etlap" onMouseClicked="#tableViewClick" onSort="#sortList" prefHeight="200.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="nevCol" prefWidth="300.0" text="Név" />
           <TableColumn fx:id="katCol" prefWidth="150.0" text="Kategória" />
-            <TableColumn fx:id="arCol" prefWidth="110.0" text="Ár (Ft)" />
+            <TableColumn fx:id="arCol" prefWidth="90.0" text="Ár (Ft)" />
         </columns>
       </TableView>
       <ListView fx:id="leiras" prefHeight="200.0" prefWidth="200.0" />
