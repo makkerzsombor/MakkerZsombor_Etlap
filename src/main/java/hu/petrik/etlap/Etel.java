@@ -16,6 +16,7 @@ public class Etel {
     }
 
     public Etel(String nev, String leiras, int ar, String kategoria) {
+        this.id = 0;
         this.nev = nev;
         this.leiras = leiras;
         this.ar = ar;

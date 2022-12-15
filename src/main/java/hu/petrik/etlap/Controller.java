@@ -2,6 +2,7 @@ package hu.petrik.etlap;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -113,6 +114,7 @@ public class Controller {
         } catch (SQLException e) {
             sqlAlert(e);
         }
+        leiras.getItems().clear();
     }
     private Etel getSelectedEtel() {
         int selectedIndex = Etlap.getSelectionModel().getSelectedIndex();
@@ -128,11 +130,23 @@ public class Controller {
     public void szazalekEmelesClick(ActionEvent actionEvent) {
         //TODO: ar növelés (update)
 
+
     }
 
     @FXML
     public void ftEmelesClick(ActionEvent actionEvent) {
         //TODO: ar növelés (update)
 
+    }
+
+    @FXML
+    public void tableViewClick(Event event) {
+        leiras.getItems().clear();
+        leiras.getItems().add(getSelectedEtel().getLeiras());
+    }
+
+    @FXML
+    public void sortList(Event event) {
+        Etlap.getOnSort();
     }
 }
