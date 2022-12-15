@@ -3,9 +3,13 @@ package hu.petrik.etlap;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -47,8 +51,10 @@ public class Controller {
             db = new EtelDB();
             readEtelek();
         } catch (SQLException e) {
-            sqlAlert(e);
-            Platform.exit();
+            Platform.runLater(() -> {
+                alert(Alert.AlertType.WARNING, "Hiba történt az adatbázis kapcsolat kialakításakor!",
+                        e.getMessage());
+            });
         }
     }
 
@@ -74,7 +80,18 @@ public class Controller {
 
     @FXML
     public void ujEtelClick(ActionEvent actionEvent) {
-
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("etel-form-view.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 400, 320);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Étel létrehozása");
+        stage.setScene(scene);
+        EtelFormView controller = fxmlLoader.getController();
+        stage.show();
     }
 
     @FXML
@@ -110,10 +127,12 @@ public class Controller {
     @FXML
     public void szazalekEmelesClick(ActionEvent actionEvent) {
         //TODO: ar növelés (update)
+
     }
 
     @FXML
     public void ftEmelesClick(ActionEvent actionEvent) {
         //TODO: ar növelés (update)
+
     }
 }

@@ -9,7 +9,7 @@ public class EtelDB {
     public static String DB_DRIVER = "mysql";
     public static String DB_HOST = "localhost";
     public static String DB_PORT = "3306";
-    public static String DB_NAME = "Etlapdb";
+    public static String DB_NAME = "etlapdb";
     public static String DB_USERNAME = "root";
     public static String DB_PASSWORD = "";
 
