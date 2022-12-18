@@ -45,14 +45,33 @@ public class EtelDB {
         return etelek;
     }
 
-    public boolean updateEtel(Etel etel) throws SQLException {
-        String sql = "UPDATE etlap SET nev = ?, leiras = ?, ar= ?, kategoria= ? WHERE id = ?";
+    public boolean updateEgyEtelSzazlek(Etel etel, double szazalek) throws SQLException {
+        String sql = "UPDATE etlap SET ar= ? WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, etel.getNev());
-        stmt.setString(2, etel.getLeiras());
-        stmt.setInt(3, etel.getAr());
-        stmt.setString(4, etel.getKategoria());
-        stmt.setInt(5, etel.getId());
+        stmt.setInt(1, (int) (etel.getAr() * szazalek));
+        stmt.setInt(2, etel.getId());
+        return stmt.executeUpdate() > 0;
+    }
+
+    public boolean updateEgyEtelFt(Etel etel, int emeles) throws SQLException {
+        String sql = "UPDATE etlap SET ar= ? WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, etel.getAr() + emeles);
+        stmt.setInt(2, etel.getId());
+        return stmt.executeUpdate() > 0;
+    }
+
+    public boolean updateMindenEtelSzazalek(Etel etel, double szazalek) throws SQLException {
+        String sql = "UPDATE etlap SET ar= ? ";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, (int) (etel.getAr() * szazalek));
+        return stmt.executeUpdate() > 0;
+    }
+
+    public boolean updateMindenEtelFt(Etel etel, int emeles) throws SQLException {
+        String sql = "UPDATE etlap SET ar= ? WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, etel.getAr() + emeles);
         return stmt.executeUpdate() > 0;
     }
 

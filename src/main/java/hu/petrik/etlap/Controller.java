@@ -48,6 +48,8 @@ public class Controller {
         nevCol.setCellValueFactory(new PropertyValueFactory<>("nev"));
         katCol.setCellValueFactory(new PropertyValueFactory<>("kategoria"));
         arCol.setCellValueFactory(new PropertyValueFactory<>("ar"));
+        szazalekSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5,50,10, 5));
+        ftSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(50,3000,1250, 50));
         try {
             db = new EtelDB();
             readEtelek();
@@ -133,15 +135,80 @@ public class Controller {
 
     @FXML
     public void szazalekEmelesClick(ActionEvent actionEvent) {
-        //TODO: ar növelés (update)
+        int selectedIndex = Etlap.getSelectionModel().getSelectedIndex();
 
+        if (selectedIndex != -1){
+            Optional<ButtonType> optionalButtonType = alert(Alert.AlertType.CONFIRMATION,"Biztos, hogy emelni szeretné a kiválasztott ételt?","");
+            if (optionalButtonType.isEmpty() || !optionalButtonType.get().equals(ButtonType.OK) && !optionalButtonType.get().equals(ButtonType.YES)){
+                return;
+            }
+            Etel selected = Etlap.getSelectionModel().getSelectedItem();
+            updateId = selected.getId();
+            double szazalek = szazalekSpinner.getValue();
+            szazalek = 1 + (szazalek/100);
+            Etel etel = new Etel(updateId, selected.getNev(), selected.getLeiras(), selected.getAr(), selected.getKategoria());
+            try{
+                if (db.updateEgyEtelSzazlek(etel, szazalek)){
+                    alert(Alert.AlertType.WARNING, "Sikeres modosítás!", "");
+                    readEtelek();
+                }else{
+                    alert(Alert.AlertType.WARNING, "Sikertelen modosítás!", "");
+                }
+            }catch (SQLException e){
+                sqlAlert(e);
+            }
+
+        }else{
+            Optional<ButtonType> optionalButtonType = alert(Alert.AlertType.CONFIRMATION,"Biztos, hogy emelni szeretné az ételeket?","");
+            if (optionalButtonType.isEmpty() || !optionalButtonType.get().equals(ButtonType.OK) && !optionalButtonType.get().equals(ButtonType.YES)){
+                return;
+            }
+            double szazalek = szazalekSpinner.getValue();
+            szazalek = 1 + (szazalek/100);
+            //TODO: update minden étel
+            //TODO: étel lista/id szám kell, hogy tudjak lépkedni.
+            /*try{
+                if (db.updateMindenEtelSzazalek(etel, szazalek)){
+                    alert(Alert.AlertType.WARNING, "Sikeres modosítás!", "");
+                    readEtelek();
+                }else{
+                    alert(Alert.AlertType.WARNING, "Sikertelen modosítás!", "");
+                }
+            }catch (SQLException e){
+                sqlAlert(e);
+            }*/
+        }
 
     }
 
     @FXML
     public void ftEmelesClick(ActionEvent actionEvent) {
-        //TODO: ar növelés (update)
+        int selectedIndex = Etlap.getSelectionModel().getSelectedIndex();
 
+        if (selectedIndex != -1){
+            Optional<ButtonType> optionalButtonType = alert(Alert.AlertType.CONFIRMATION,"Biztos, hogy emelni szeretné a kiválasztott ételt?","");
+            if (optionalButtonType.isEmpty() || !optionalButtonType.get().equals(ButtonType.OK) && !optionalButtonType.get().equals(ButtonType.YES)){
+                return;
+            }
+            Etel selected = Etlap.getSelectionModel().getSelectedItem();
+            updateId = selected.getId();
+            int ar = ftSpinner.getValue();
+            Etel etel = new Etel(updateId, selected.getNev(), selected.getLeiras(), selected.getAr(), selected.getKategoria());
+            try{
+                if (db.updateEgyEtelFt(etel, ar)){
+                    alert(Alert.AlertType.WARNING, "Sikeres modosítás!", "");
+                    readEtelek();
+                }else{
+                    alert(Alert.AlertType.WARNING, "Sikertelen modosítás!", "");
+                }
+            }catch (SQLException e){
+                sqlAlert(e);
+            }
+
+        }else{
+            //TODO: Minden ár növelése
+
+        }
     }
 
     @FXML
