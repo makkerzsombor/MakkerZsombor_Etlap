@@ -61,20 +61,6 @@ public class EtelDB {
         return stmt.executeUpdate() > 0;
     }
 
-    public boolean updateMindenEtelSzazalek(Etel etel, double szazalek) throws SQLException {
-        String sql = "UPDATE etlap SET ar= ? ";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, (int) (etel.getAr() * szazalek));
-        return stmt.executeUpdate() > 0;
-    }
-
-    public boolean updateMindenEtelFt(Etel etel, int emeles) throws SQLException {
-        String sql = "UPDATE etlap SET ar= ? WHERE id = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, etel.getAr() + emeles);
-        return stmt.executeUpdate() > 0;
-    }
-
     public boolean deleteEtel(int id) throws SQLException {
         String sql = "DELETE FROM etlap WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);

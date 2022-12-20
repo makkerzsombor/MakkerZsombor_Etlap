@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,8 @@ public class Controller {
 
     private EtelDB db;
 
+    private List<Etel> lista= new ArrayList<Etel>();
+
     private int updateId;
     @FXML
     public void initialize(){
@@ -65,6 +68,7 @@ public class Controller {
         List<Etel> etelek = db.readEtelek();
         Etlap.getItems().clear();
         Etlap.getItems().addAll(etelek);
+        lista.addAll(etelek);
     }
 
     private void sqlAlert(SQLException e) {
@@ -165,20 +169,30 @@ public class Controller {
             }
             double szazalek = szazalekSpinner.getValue();
             szazalek = 1 + (szazalek/100);
-            //TODO: update minden étel
-            //TODO: étel lista/id szám kell, hogy tudjak lépkedni.
-            /*try{
-                if (db.updateMindenEtelSzazalek(etel, szazalek)){
-                    alert(Alert.AlertType.WARNING, "Sikeres modosítás!", "");
-                    readEtelek();
-                }else{
-                    alert(Alert.AlertType.WARNING, "Sikertelen modosítás!", "");
+            boolean siker = false;
+            int i = 0;
+            while(lista.size() > i){
+                Etel etel = new Etel (lista.get(i).getId(), lista.get(i).getNev(),  lista.get(i).getLeiras(), lista.get(i).getAr(), lista.get(i).getKategoria());
+                try {
+                    if(db.updateEgyEtelSzazlek(etel, szazalek)) {
+                        siker = true;
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
-            }catch (SQLException e){
-                sqlAlert(e);
-            }*/
+                i++;
+            }
+            if (siker){
+                alert(Alert.AlertType.WARNING, "Sikeres modosítás!", "");
+                try {
+                    readEtelek();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                alert(Alert.AlertType.WARNING, "Sikertelen modosítás!", "");
+            }
         }
-
     }
 
     @FXML
@@ -206,8 +220,34 @@ public class Controller {
             }
 
         }else{
-            //TODO: Minden ár növelése
-
+            Optional<ButtonType> optionalButtonType = alert(Alert.AlertType.CONFIRMATION,"Biztos, hogy emelni szeretné az ételeket?","");
+            if (optionalButtonType.isEmpty() || !optionalButtonType.get().equals(ButtonType.OK) && !optionalButtonType.get().equals(ButtonType.YES)){
+                return;
+            }
+            int ar = ftSpinner.getValue();
+            boolean siker = false;
+            int i = 0;
+            while(lista.size() > i){
+                Etel etel = new Etel (lista.get(i).getId(), lista.get(i).getNev(),  lista.get(i).getLeiras(), lista.get(i).getAr(), lista.get(i).getKategoria());
+                try {
+                    if(db.updateEgyEtelFt(etel, ar)) {
+                        siker = true;
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                i++;
+            }
+            if (siker){
+                alert(Alert.AlertType.WARNING, "Sikeres modosítás!", "");
+                try {
+                    readEtelek();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                alert(Alert.AlertType.WARNING, "Sikertelen modosítás!", "");
+            }
         }
     }
 
